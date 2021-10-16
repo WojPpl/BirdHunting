@@ -3,6 +3,29 @@ import './App.css';
 
 const App = () => {
 
+    const meterInPx = 200;//200px based on image size and Royal albatross size (1,07 - 1,35 wikipedia);
+    const gravityPx = 9.8 * meterInPx; // average acceleration of a falling object due to the force of gravity
+    const breakTime = 2; // the assumed time of the bird's own speed decrease to 0
+    const averageSpeed = 450; // average speed in px from animation measurement (400 -> 2m/s)
+
+    const fallingSpeed = time => {
+        //v = g * t
+        return gravityPx * time
+    }
+
+    const breakingDelay = speed => {
+        // a = Vp - Vk / timeChange
+        return speed / breakTime
+    }
+
+    const breakingWay = speed => {
+       return Math.pow(speed, 2) / breakingDelay(speed);
+    }
+
+    let birdPosition = [];
+
+    const [birdPhysics, setBirdPhysics] = useState(true);
+    const [birdSpeed, setBirdsSpeed] = useState(null);
     const [levelScreen, setLevelScreen] = useState({active: true, level: 0});
     const [birdActive, setBirdActive] = useState({visible: false, dead: false, top: Math.floor(Math.random() * 60)});
     const [flamingActive, setFlamingActive] = useState({
@@ -17,9 +40,10 @@ const App = () => {
     });
 
     const [score, setScore] = useState(0);
-    let levelTime = 30;
+    let levelTime = 3000; //in s
+    let fallingTime = 0; // in 1/100 s
     let interval;
-
+    let fallingInterval;
 
     const getLeftPosition = (id) => {
         let div = document.getElementById(id);
@@ -44,19 +68,57 @@ const App = () => {
         }
     };
 
+    const measureBirdSpeed = (positions) => {
+        console.log("Pomiar");
+        console.log(positions[0]);
+        console.log(positions[1]);
+        if(positions[1] < positions[0]) {
+            setBirdsSpeed(averageSpeed);
+        }
+        setBirdsSpeed(positions[1] - positions[0]);
+    }
+
     const timeCountdown = () => {
-        levelTime = levelTime - 1
+        levelTime = levelTime - 1;
+        if(birdPosition.length < 3) {
+            birdPosition.push(parseFloat(getLeftPosition("bird")));
+        }
+        if(birdPosition.length === 2) {
+            measureBirdSpeed(birdPosition)
+        }
         if (levelTime === 0) {
             clearInterval(interval);
             setLevelScreen({active: true, level: levelScreen.level + 1})
         }
     }
 
+    const fallingCountdown = () => {
+        fallingTime = fallingTime + 1;
+        console.log("falling speed");
+        console.log(fallingSpeed(fallingTime/100));
+        console.log("braking full way");
+        console.log(breakingWay(birdSpeed));
+        console.log("birds measured speed");
+        console.log(birdSpeed);
+        if(fallingTime === 20) {
+            clearInterval(fallingInterval);
+        }
+    };
+
     useEffect(() => {
         if (!levelScreen.active) {
             interval = setInterval(timeCountdown, 1000);
         }
     }, [levelScreen.active]);
+
+    useEffect(()=>{
+        if(birdActive.dead && birdPhysics) {
+            console.log("szczelony");
+            fallingInterval = setInterval(fallingCountdown, 100);
+        }
+    },[birdActive.dead]);
+
+
 
     useEffect(() => {
         if (!birdActive.visible) {
@@ -134,7 +196,7 @@ const App = () => {
                 backgroundImage: birdActive.dead ? "url(./birds/splash.png)" : "none"
             }}>&nbsp;</span></div>}
 
-            {vultureActive.visible &&
+{/*            {vultureActive.visible &&
             <div id="vulture"
                 className={vultureActive.dead ? "vulture birdKilledOpposite" : levelScreen.level === 0 ? "vulture animLeft" : levelScreen.level === 1 ? "vulture animLeftSpeed" : levelScreen.level === 3 ? "vulture animLeftRain" : "vulture animLeftWind"}
                 style={{
@@ -156,7 +218,7 @@ const App = () => {
             }}
                  onClick={() => shootBird(2)}><span className={"splash"} style={{
                 backgroundImage: flamingActive.dead ? "url(./birds/splash.png)" : "none"
-            }}>&nbsp;</span></div>}
+            }}>&nbsp;</span></div>}*/}
         </div>
     );
 }
