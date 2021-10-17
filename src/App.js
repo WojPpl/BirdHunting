@@ -22,10 +22,10 @@ const App = () => {
        return Math.pow(speed, 2) / breakingDelay(speed);
     }
 
-    let birdPosition = [];
-
+    const [birdPosition, setBirdPosition] = useState([]);
     const [birdPhysics, setBirdPhysics] = useState(true);
-    const [birdSpeed, setBirdsSpeed] = useState(null);
+    const [breakWay, setBreakWay] = useState(0);
+    const [fallTopPosition, setFallTopPosition] = useState(null);
     const [levelScreen, setLevelScreen] = useState({active: true, level: 0});
     const [birdActive, setBirdActive] = useState({visible: false, dead: false, top: Math.floor(Math.random() * 60)});
     const [flamingActive, setFlamingActive] = useState({
@@ -52,6 +52,13 @@ const App = () => {
         return left
     }
 
+    const getTopPosition = (id) => {
+        let div = document.getElementById(id);
+        let style = getComputedStyle(div);
+        let top = style.getPropertyValue("top");
+        return top
+    }
+
     const shootBird = (birdId) => {
         setScore(score + 1);
         // eslint-disable-next-line default-case
@@ -69,23 +76,21 @@ const App = () => {
     };
 
     const measureBirdSpeed = (positions) => {
-        console.log("Pomiar");
-        console.log(positions[0]);
-        console.log(positions[1]);
         if(positions[1] < positions[0]) {
-            setBirdsSpeed(averageSpeed);
+            return averageSpeed;
         }
-        setBirdsSpeed(positions[1] - positions[0]);
+        return (positions[1] - positions[0]);
     }
 
     const timeCountdown = () => {
         levelTime = levelTime - 1;
+
         if(birdPosition.length < 3) {
-            birdPosition.push(parseFloat(getLeftPosition("bird")));
+            let positionsBefore = birdPosition;
+            positionsBefore.push(parseFloat(getLeftPosition("bird")));
+            setBirdPosition(positionsBefore);
         }
-        if(birdPosition.length === 2) {
-            measureBirdSpeed(birdPosition)
-        }
+
         if (levelTime === 0) {
             clearInterval(interval);
             setLevelScreen({active: true, level: levelScreen.level + 1})
@@ -93,13 +98,24 @@ const App = () => {
     }
 
     const fallingCountdown = () => {
+        if(fallTopPosition === null) {
+            setFallTopPosition(parseFloat(getTopPosition("bird")))
+        }
+        const breakDistance = breakingWay(measureBirdSpeed(birdPosition));
+
         fallingTime = fallingTime + 1;
+        setFallTopPosition(parseFloat(getTopPosition("bird")) + fallingSpeed(fallingTime/100));
+        setBreakWay(breakWay + breakDistance / 20);
+        console.log("falling speed");
+        console.log(fallingSpeed(fallingTime/100));
         console.log("falling speed");
         console.log(fallingSpeed(fallingTime/100));
         console.log("braking full way");
-        console.log(breakingWay(birdSpeed));
-        console.log("birds measured speed");
-        console.log(birdSpeed);
+        console.log(breakDistance);
+        console.log("birds measured initial speed");
+        console.log(measureBirdSpeed(birdPosition));
+
+
         if(fallingTime === 20) {
             clearInterval(fallingInterval);
         }
@@ -113,11 +129,9 @@ const App = () => {
 
     useEffect(()=>{
         if(birdActive.dead && birdPhysics) {
-            console.log("szczelony");
             fallingInterval = setInterval(fallingCountdown, 100);
         }
     },[birdActive.dead]);
-
 
 
     useEffect(() => {
@@ -186,11 +200,12 @@ const App = () => {
             <span className={"Score"}>{"Score: " + score}</span>
             {birdActive.visible &&
             <div id="bird"
-                 className={birdActive.dead ? "bird birdKilled" : levelScreen.level === 0 ? "bird animRight" : levelScreen.level === 1 ? "bird animRightSpeed" : levelScreen.level === 3 ? "bird animRightRain" : "bird animRightWind"}
+                 className={birdActive.dead ? birdPhysics ? "bird birdKilledPhysics" : "bird birdKilled" : levelScreen.level === 0 ? "bird animRight" : levelScreen.level === 1 ? "bird animRightSpeed" : levelScreen.level === 3 ? "bird animRightRain" : "bird animRightWind"}
                  style={{
-                     top: birdActive.top + "vh",
-                     left: birdActive.dead ? getLeftPosition("bird") : 0,
-                     backgroundImage: "url(./birds/cos.gif)"
+                     top: birdActive.dead && birdPhysics ? fallTopPosition + "px" : birdActive.top + "vh",
+                     left: birdActive.dead ? parseFloat(getLeftPosition("bird"))+breakWay + "px" : "0",
+                     backgroundImage: "url(./birds/cos.gif)",
+                     right: birdPhysics ? -breakWay + "px" : 0
                  }}
                  onClick={() => shootBird(0)}><span className={"splash"} style={{
                 backgroundImage: birdActive.dead ? "url(./birds/splash.png)" : "none"

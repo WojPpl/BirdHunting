@@ -83,6 +83,10 @@
   animation: fall 1s linear;
 }
 
+.birdKilledPhysics {
+  animation: physicFall 1s linear;
+}
+
 .birdKilledOpposite {
   animation: fallback 1s linear;
   animation-delay: 0ms;
@@ -351,6 +355,15 @@
   100% {
      top: 120vh;
      transform: rotate(180deg);
+  }
+}
+
+@keyframes physicFall {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
   }
 }
 
