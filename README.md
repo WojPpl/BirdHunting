@@ -1,10 +1,10 @@
-# Getting Started with Create React App
+# Bird hunter react game
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## How to run game
 
-In the project directory, you can run:
+In the project directory run:
 
 ### `npm start`
 
@@ -14,57 +14,43 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
+## About game
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The game is about shooting birds by targeting them with the mouse cursor and shoot them with the left mouse button
 
-### `npm run build`
+Pre level -1 was created after the base game was programmed to simulate near-real physics.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Calculating the position in the pre-level causes the game to not run smoothly, but it makes you realize what the animations should look like in the next levels.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Speed Measurements (ex. driven by gravity) can be chacked in console while playing at this level
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Bird animations with the exception of wing animations such as rotating and horizontal movement + falling in non-pre-level levels were obtained using CSS animations (see app.css file)
 
-### `npm run eject`
+## Sources
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The animations of the bird's wings movement and rain were obtained through the use of animated gifs:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+[https://annekatrinekamper.blogspot.com/2011/02/flying-bird-animation-loop.html](https://annekatrinekamper.blogspot.com/2011/02/flying-bird-animation-loop.html) - Albatros
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+[https://www.animatedimages.org/img-animated-vulture-image-0016-193115.htm](https://www.animatedimages.org/img-animated-vulture-image-0016-193115.htm) - Vulture
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+[https://www.gifss.com/aves/flamencos/index3.html](https://www.gifss.com/aves/flamencos/index3.html) - Flaming
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Rain:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+[http://www.clipartsuggest.com/image0015-gif-DBFHAD-clipart/](http://www.clipartsuggest.com/image0015-gif-DBFHAD-clipart/)
 
-### Code Splitting
+Landscape image:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+[https://www.freepik.com/search?dates=any&demographic=any-people&format=search&page=1&query=brgfx%20landscape&sort=popular](https://www.freepik.com/search?dates=any&demographic=any-people&format=search&page=1&query=brgfx%20landscape&sort=popular)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Not typical fonts are from google:
 
-### Making a Progressive Web App
+https://fonts.google.com/specimen/Coming+Soon?query=Coming+soon
+https://fonts.google.com/specimen/Rampart+One?query=Rampart+One
+https://fonts.google.com/specimen/Permanent+Marker?query=Permanent+Marker
+https://fonts.google.com/specimen/Staatliches?query=Staatliches
+https://fonts.google.com/specimen/Knewave?query=Knewave
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
