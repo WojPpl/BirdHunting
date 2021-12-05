@@ -123,13 +123,15 @@ const App = () => {
 
     useEffect(() => {
         if (!levelScreen.active) {
-            interval = setInterval(timeCountdown, 1000);
+            // eslint-disable-next-line
+            interval = setInterval(timeCountdown,1000);
         }
     }, [levelScreen.active]);
 
     useEffect(()=>{
         if(birdActive.dead && birdPhysics) {
-            fallingInterval = setInterval(fallingCountdown, 100);
+            // eslint-disable-next-line
+            fallingInterval = setInterval(fallingCountdown,100);
         }
     },[birdActive.dead]);
 
@@ -141,23 +143,25 @@ const App = () => {
         if (birdActive.dead) {
             setTimeout(() => {
                 setBirdActive({visible: false, dead: false})
-            }, 800)
+            },800)
         }
       if (!flamingActive.visible) {
         setFlamingActive({visible: true, dead: false, top: Math.floor(Math.random() * 70)})
       }
+        // eslint-disable-next-line
       if (flamingActive .dead) {
         setTimeout(() => {
           setFlamingActive({visible: false, dead: false})
-        }, 800)
+        },800)
       }
         if (!vultureActive.visible) {
             setVultureActive({visible: true, dead: false, top: Math.floor(Math.random() * 70)})
         }
+        // eslint-disable-next-line
         if (vultureActive .dead) {
             setTimeout(() => {
                 setVultureActive({visible: false, dead: false})
-            }, 800)
+            },800)
         }
 
     }, [birdActive, flamingActive, vultureActive]);
